@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Flash Cards Quiz",
-    "slug": "flashcards-quiz",
+    "name": "FlashCardQuiz",
+    "slug": "flash-card-quiz",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
