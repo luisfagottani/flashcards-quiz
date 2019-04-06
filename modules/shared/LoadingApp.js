@@ -9,11 +9,9 @@ class LoadingApp extends Component {
 
   componentDidMount() {
     const { width, opacity, height } = this.state;
-    Animated.sequence([
-      Animated.timing(opacity, { duration: 500, toValue: 1 }),
-      Animated.spring(width, { toValue: 300, speed: 4 }),
-      Animated.spring(height, { toValue: 150, speed: 4 })
-    ]).start();
+    Animated.timing(opacity, { duration: 500, toValue: 1 }).start();
+    Animated.spring(width, { toValue: 300, speed: 4 }).start();
+    Animated.spring(height, { toValue: 150, speed: 4 }).start();
   }
 
   render() {

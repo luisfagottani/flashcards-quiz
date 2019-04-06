@@ -1,12 +1,16 @@
 import React, { Component } from "react";
-import { View, Text, Animated } from "react-native";
+import { View, Animated } from "react-native";
 import { connect } from "react-redux";
 import LoadingApp from "./shared/LoadingApp";
 
 import { loading } from "../redux/actions";
 
+import AppRouterContainer from "../router/AppRouterContainer";
+const AppContainer = AppRouterContainer;
+
 class Hello extends Component {
   state = {
+    isLoadingLocal: true,
     opacity: new Animated.Value(1)
   };
 
@@ -21,15 +25,15 @@ class Hello extends Component {
     const { isLoading } = this.props;
 
     if (isLoading !== nextProps) {
-      Animated.timing(opacity, { duration: 500, toValue: 0 }).start();
+      Animated.timing(opacity, { duration: 500, toValue: 0 }).start(() =>
+        this.setState({ isLoadingLocal: false })
+      );
     }
   }
-
   render() {
-    const { isLoading } = this.props;
-    const { opacity } = this.state;
+    const { opacity, isLoadingLocal } = this.state;
 
-    if (isLoading) {
+    if (isLoadingLocal) {
       return (
         <View
           style={{
@@ -45,11 +49,7 @@ class Hello extends Component {
         </View>
       );
     }
-    return (
-      <View>
-        <Text>Hello World</Text>
-      </View>
-    );
+    return <AppContainer />;
   }
 }
 
