@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, ActivityIndicator, Animated } from "react-native";
+import { View, ActivityIndicator, Animated } from "react-native";
 class LoadingApp extends Component {
   state = {
     opacity: new Animated.Value(0),

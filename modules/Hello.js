@@ -17,7 +17,7 @@ class Hello extends Component {
   componentDidMount() {
     setTimeout(() => {
       this.props.dispatch(loading(false));
-    }, 6000);
+    }, 3000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -30,25 +30,26 @@ class Hello extends Component {
       );
     }
   }
+
   render() {
     const { opacity, isLoadingLocal } = this.state;
 
-    if (isLoadingLocal) {
-      return (
-        <View
-          style={{
-            alignItems: "center",
-            flexDirection: "column",
-            justifyContent: "center",
-            flex: 1
-          }}
-        >
-          <Animated.View style={{ opacity }}>
-            <LoadingApp />
-          </Animated.View>
-        </View>
-      );
-    }
+    // if (isLoadingLocal) {
+    //   return (
+    //     <View
+    //       style={{
+    //         alignItems: "center",
+    //         flexDirection: "column",
+    //         justifyContent: "center",
+    //         flex: 1
+    //       }}
+    //     >
+    //       <Animated.View style={{ opacity }}>
+    //         <LoadingApp />
+    //       </Animated.View>
+    //     </View>
+    //   );
+    // }
     return <AppContainer />;
   }
 }
