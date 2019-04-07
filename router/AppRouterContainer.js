@@ -17,7 +17,7 @@ const AppRouterContainer = createStackNavigator(
   },
   {
     headerMode: "none",
-    initialRouteParams: { transition: "fade" },
+    initialRouteName: "Home",
     transitionConfig: () => fadeIn(),
     cardStyle: {
       backgroundColor: "#bf29ec",

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Dimensions, Platform } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import Carousel from "react-native-snap-carousel";
+import { connect } from "react-redux";
+import ListQuizCard from "./ListQuizCard";
 
 function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
@@ -16,14 +18,8 @@ export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
 class ListQuizContainer extends Component {
-  _renderItem({ item, index }) {
-    return (
-      <View style={styles.card}>
-        <View style={styles.head}>
-          <Text style={styles.title}>{item.title}</Text>
-        </View>
-      </View>
-    );
+  _renderItem({ item }) {
+    return <ListQuizCard item={item} />;
   }
   render() {
     return (
@@ -41,7 +37,7 @@ class ListQuizContainer extends Component {
           ref={c => {
             this._carousel = c;
           }}
-          data={[{ title: "teste" }, { title: "teste2" }, { title: "teste3" }]}
+          data={this.props.getAllCards}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -51,33 +47,11 @@ class ListQuizContainer extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  card: {
-    width: "100%",
-    height: viewportHeight / 2,
-    borderRadius: 3,
-    shadowColor: "#000",
-    backgroundColor: "#fff",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
-  },
-  head: {
-    backgroundColor: "#f77a1f",
-    height: "15%",
-    justifyContent: "center"
-  },
-  title: {
-    fontSize: 20,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase"
-  }
-});
+function mapStateToProps(state) {
+  console.log("TESTE", state);
+  return {
+    getAllCards: state.cards
+  };
+}
 
-export default ListQuizContainer;
+export default connect(mapStateToProps)(ListQuizContainer);

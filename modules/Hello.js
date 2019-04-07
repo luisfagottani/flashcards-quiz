@@ -3,7 +3,7 @@ import { View, Animated } from "react-native";
 import { connect } from "react-redux";
 import LoadingApp from "./shared/LoadingApp";
 
-import { loading } from "../redux/actions";
+import { persistAllCardsThunk } from "../redux/actions";
 
 import AppRouterContainer from "../router/AppRouterContainer";
 const AppContainer = AppRouterContainer;
@@ -16,8 +16,8 @@ class Hello extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      this.props.dispatch(loading(false));
-    }, 3000);
+      this.props.dispatch(persistAllCardsThunk());
+    }, 2000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,22 +34,22 @@ class Hello extends Component {
   render() {
     const { opacity, isLoadingLocal } = this.state;
 
-    // if (isLoadingLocal) {
-    //   return (
-    //     <View
-    //       style={{
-    //         alignItems: "center",
-    //         flexDirection: "column",
-    //         justifyContent: "center",
-    //         flex: 1
-    //       }}
-    //     >
-    //       <Animated.View style={{ opacity }}>
-    //         <LoadingApp />
-    //       </Animated.View>
-    //     </View>
-    //   );
-    // }
+    if (isLoadingLocal) {
+      return (
+        <View
+          style={{
+            alignItems: "center",
+            flexDirection: "column",
+            justifyContent: "center",
+            flex: 1
+          }}
+        >
+          <Animated.View style={{ opacity }}>
+            <LoadingApp />
+          </Animated.View>
+        </View>
+      );
+    }
     return <AppContainer />;
   }
 }
