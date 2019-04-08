@@ -14,7 +14,6 @@ const { height: viewportHeight } = Dimensions.get("window");
 class ListQuizCard extends Component {
   render() {
     const { item } = this.props;
-    console.log(item);
     return (
       <View style={styles.card}>
         <View style={styles.head}>
@@ -37,7 +36,14 @@ class ListQuizCard extends Component {
             </Text>
           </View>
           <View style={{ marginTop: 30 }}>
-            <TouchableOpacity style={[styles.button]} onPress={this.onPress}>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={() => {
+                this.props.navigation.navigate("PlayQuiz", {
+                  uid: item.id
+                });
+              }}
+            >
               <Text style={styles.textBtn}> Jogar </Text>
             </TouchableOpacity>
           </View>

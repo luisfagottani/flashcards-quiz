@@ -26,8 +26,8 @@ class ListQuizContainer extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.getAllCards);
     if (this.props.getAllCards.length === 0) {
+      this.props.navigation.pop();
       this.props.navigation.push("CreateQuiz", { transition: "fade" });
     }
   }

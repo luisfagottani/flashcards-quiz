@@ -4,3 +4,10 @@ export const getAllCards = state => {
   }
   return {};
 };
+
+export const getQuestionByCard = (state, id) => {
+  if (state.cards[id].questions.length > 0) {
+    return state.cards[id].questions;
+  }
+  return [];
+};

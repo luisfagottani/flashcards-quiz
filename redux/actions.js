@@ -44,6 +44,8 @@ function addQuestion(question) {
 export function createQuestion(question) {
   return (dispatch, getState) => {
     let cards = JSON.parse(JSON.stringify(getState().cards));
+    console.log("ID", question);
+    console.log("ADD", cards[question.parentId]);
     cards[question.parentId].questions.push(question);
     createQuestionApi(cards);
     dispatch(addQuestion(question));

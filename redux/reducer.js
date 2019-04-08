@@ -27,7 +27,7 @@ function reducer(state = initialState, action) {
     case CREATE_QUIZ: {
       return {
         ...state,
-        cards: { ...action.quiz, ...state.cards }
+        cards: { ...state.cards, ...action.quiz }
       };
     }
     case ADD_QUESTION: {

@@ -49,7 +49,7 @@ class CreateQuestion extends Component {
         answer: "",
         isRight: false
       });
-
+      this.props.navigation.pop();
       this.props.navigation.push("ListQuiz");
     }
   };
