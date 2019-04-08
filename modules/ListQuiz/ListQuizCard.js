@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
+import { withNavigation } from "react-navigation";
 import Dificulty from "./Dificulty";
 
 const { height: viewportHeight } = Dimensions.get("window");
@@ -13,6 +14,7 @@ const { height: viewportHeight } = Dimensions.get("window");
 class ListQuizCard extends Component {
   render() {
     const { item } = this.props;
+    console.log(item);
     return (
       <View style={styles.card}>
         <View style={styles.head}>
@@ -40,7 +42,14 @@ class ListQuizCard extends Component {
             </TouchableOpacity>
           </View>
           <View style={{ marginTop: 10 }}>
-            <TouchableOpacity style={[styles.button]} onPress={this.onPress}>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={() => {
+                this.props.navigation.navigate("CreateQuestion", {
+                  uid: item.id
+                });
+              }}
+            >
               <Text style={styles.textBtn}> Add Pergunta </Text>
             </TouchableOpacity>
           </View>
@@ -118,4 +127,4 @@ const styles = StyleSheet.create({
     textTransform: "uppercase"
   }
 });
-export default ListQuizCard;
+export default withNavigation(ListQuizCard);

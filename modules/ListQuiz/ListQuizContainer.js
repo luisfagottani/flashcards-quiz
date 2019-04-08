@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import { connect } from "react-redux";
 import ListQuizCard from "./ListQuizCard";
+import { getAllCards } from "../../redux/selectors";
+
+import BackScreenBtn from "../shared/BackScreenBtn";
 
 function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
@@ -21,6 +24,13 @@ class ListQuizContainer extends Component {
   _renderItem({ item }) {
     return <ListQuizCard item={item} />;
   }
+
+  componentDidMount() {
+    console.log(this.props.getAllCards);
+    if (this.props.getAllCards.length === 0) {
+      this.props.navigation.push("CreateQuiz", { transition: "fade" });
+    }
+  }
   render() {
     return (
       <View
@@ -28,11 +38,18 @@ class ListQuizContainer extends Component {
           flex: 1,
           justifyContent: "center",
           alignItems: "stretch",
-          flexDirection: "row",
-          paddingTop: 100,
+          flexDirection: "column",
           paddingBottom: 100
         }}
       >
+        <BackScreenBtn
+          route={"Home"}
+          navigation={this.props.navigation}
+          styles={{ marginBottom: 100 }}
+        >
+          Voltar
+        </BackScreenBtn>
+
         <Carousel
           ref={c => {
             this._carousel = c;
@@ -49,7 +66,7 @@ class ListQuizContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    getAllCards: state.cards
+    getAllCards: Object.values(getAllCards(state))
   };
 }
 

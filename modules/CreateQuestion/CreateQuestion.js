@@ -7,26 +7,26 @@ import {
   Dimensions,
   TextInput,
   KeyboardAvoidingView,
-  Slider,
+  Switch,
   Alert
 } from "react-native";
 import { connect } from "react-redux";
-import { createQuizCard } from "../../redux/actions";
+import { createQuestion } from "../../redux/actions";
 import BackScreenBtn from "../shared/BackScreenBtn";
 
 const { height: viewportHeight } = Dimensions.get("window");
 
-class CreateQuiz extends Component {
+class CreateQuestion extends Component {
   state = {
-    titleQuiz: "",
-    describeQuiz: "",
-    dificulty: 0
+    question: "",
+    answer: "",
+    isRight: false
   };
 
   submitForm = () => {
     if (
-      this.state.titleQuiz.trim().length === 0 ||
-      this.state.describeQuiz.trim().length === 0
+      this.state.question.trim().length === 0 ||
+      this.state.answer.trim().length === 0
     ) {
       Alert.alert(
         "Campos obrigatórios!",
@@ -36,22 +36,21 @@ class CreateQuiz extends Component {
       );
     } else {
       this.props.dispatch(
-        createQuizCard({
-          title: this.state.titleQuiz,
-          describe: this.state.describeQuiz,
-          dificulty: this.state.dificulty,
-          questions: []
+        createQuestion({
+          parentId: this.props.navigation.state.params.uid,
+          question: this.state.question,
+          answer: this.state.answer,
+          isRight: this.state.isRight
         })
       );
 
       this.setState({
-        titleQuiz: "",
-        describeQuiz: "",
-        dificulty: "",
-        questions: []
+        question: "",
+        answer: "",
+        isRight: false
       });
 
-      this.props.navigation.push("Home");
+      this.props.navigation.push("ListQuiz");
     }
   };
 
@@ -71,7 +70,7 @@ class CreateQuiz extends Component {
       >
         <BackScreenBtn
           navigation={this.props.navigation}
-          route={"Home"}
+          route={"ListQuiz"}
           styles={{
             marginBottom: 100,
             alignSelf: "flex-start",
@@ -82,10 +81,10 @@ class CreateQuiz extends Component {
         </BackScreenBtn>
         <View style={styles.card}>
           <View style={styles.head}>
-            <Text style={styles.title}>Cadastrar Quiz</Text>
+            <Text style={styles.title}>Cadastrar Pergunta</Text>
           </View>
           <View style={styles.content}>
-            <Text style={styles.subtitle}>Qual será o tema do seu quiz?</Text>
+            <Text style={styles.subtitle}>Uma pergunta para o seu quiz!</Text>
             <View style={{ width: "100%" }}>
               <TextInput
                 style={{
@@ -100,9 +99,9 @@ class CreateQuiz extends Component {
                   marginBottom: 15,
                   borderRadius: 3
                 }}
-                placeholder={"Digite o tema do seu quiz..."}
-                onChangeText={text => this.setState({ titleQuiz: text })}
-                value={this.state.titleQuiz}
+                placeholder={"Digite a pergunta..."}
+                onChangeText={text => this.setState({ question: text })}
+                value={this.state.question}
               />
               <TextInput
                 style={{
@@ -117,9 +116,9 @@ class CreateQuiz extends Component {
                   borderRadius: 3,
                   marginBottom: 15
                 }}
-                placeholder={"Descreva sobre o tema"}
-                onChangeText={text => this.setState({ describeQuiz: text })}
-                value={this.state.describeQuiz}
+                placeholder={"Digite a resposta"}
+                onChangeText={text => this.setState({ answer: text })}
+                value={this.state.answer}
               />
               <Text
                 style={{
@@ -130,15 +129,12 @@ class CreateQuiz extends Component {
                   fontWeight: "bold"
                 }}
               >
-                Dificuldade: {this.state.dificulty}
+                Ela está certa?
               </Text>
-              <Slider
+              <Switch
                 style={{ width: "80%", alignSelf: "center" }}
-                step={1}
-                value={this.state.dificulty}
-                maximumValue={5}
-                minimumValue={0}
-                onValueChange={value => this.setState({ dificulty: value })}
+                onValueChange={value => this.setState({ isRight: value })}
+                value={this.state.isRight}
               />
             </View>
             <View style={{ marginTop: 10, marginBottom: 30 }}>
@@ -227,4 +223,4 @@ const styles = StyleSheet.create({
     textTransform: "uppercase"
   }
 });
-export default connect()(CreateQuiz);
+export default connect()(CreateQuestion);

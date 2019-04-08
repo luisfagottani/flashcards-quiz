@@ -1,4 +1,10 @@
-import { INDEX, LOADING, RECEIVE_CARDS } from "./actions";
+import {
+  INDEX,
+  LOADING,
+  RECEIVE_CARDS,
+  CREATE_QUIZ,
+  ADD_QUESTION
+} from "./actions";
 
 const initialState = {
   loading: true,
@@ -16,6 +22,27 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         cards: action.cards
+      };
+    }
+    case CREATE_QUIZ: {
+      return {
+        ...state,
+        cards: { ...action.quiz, ...state.cards }
+      };
+    }
+    case ADD_QUESTION: {
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          [action.question.parentId]: {
+            ...state.cards[action.question.parentId],
+            questions: [
+              ...state.cards[action.question.parentId].questions,
+              { ...action.question }
+            ]
+          }
+        }
       };
     }
     default:

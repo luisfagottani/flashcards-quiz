@@ -43,14 +43,25 @@ export const data = {
   }
 };
 
-export function createQuiz({ quiz }) {
-  return AsyncStorage.mergeItem(
-    CALENDAR_STORAGE_KEY,
+export function createQuiz(quiz) {
+  const uid = generateUID();
+  AsyncStorage.mergeItem(
+    QUIZ_STORAGE_KEY,
     JSON.stringify({
-      [generateUID()]: quiz
+      [uid]: { id: uid, ...quiz }
+    })
+  );
+  return uid;
+}
+
+export function createQuestionApi(cards) {
+  AsyncStorage.mergeItem(
+    QUIZ_STORAGE_KEY,
+    JSON.stringify({
+      ...cards
     })
   );
 }
 
 export const getDecks = () =>
-  Promise.all(AsyncStorage.getAllKeys().then(ks => ks));
+  AsyncStorage.getItem(QUIZ_STORAGE_KEY).then(results => JSON.parse(results));

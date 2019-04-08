@@ -1,6 +1,7 @@
 import HomeScreen from "./../modules/HomeScreen";
 import ListQuizContainer from "./../modules/ListQuiz/ListQuizContainer";
 import CreateQuiz from "../modules/CreateQuiz/CreateQuiz";
+import CreateQuestion from "../modules/CreateQuestion/CreateQuestion";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { fadeIn } from "react-navigation-transitions";
 
@@ -17,6 +18,12 @@ const AppRouterContainer = createStackNavigator(
     },
     CreateQuiz: {
       screen: CreateQuiz,
+      navigationOptions: {
+        gesturesEnabled: false
+      }
+    },
+    CreateQuestion: {
+      screen: CreateQuestion,
       navigationOptions: {
         gesturesEnabled: false
       }
