@@ -1,3 +1,18 @@
+import { AsyncStorage } from "react-native";
+
+export const QUIZ_STORAGE_KEY = "FlashCardQuiz:cards";
+
+function generateUID() {
+  return (
+    Math.random()
+      .toString(36)
+      .substring(2, 15) +
+    Math.random()
+      .toString(36)
+      .substring(2, 15)
+  );
+}
+
 export const data = {
   React: {
     title: "React",
@@ -28,6 +43,14 @@ export const data = {
   }
 };
 
-export const getDecks = () => {
-  return Object.values(data).map(obj => obj);
-};
+export function createQuiz({ quiz }) {
+  return AsyncStorage.mergeItem(
+    CALENDAR_STORAGE_KEY,
+    JSON.stringify({
+      [generateUID()]: quiz
+    })
+  );
+}
+
+export const getDecks = () =>
+  Promise.all(AsyncStorage.getAllKeys().then(ks => ks));

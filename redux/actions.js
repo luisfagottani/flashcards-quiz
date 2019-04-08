@@ -3,6 +3,7 @@ import { getDecks } from "../utils/api";
 export const INDEX = "INDEX";
 export const LOADING = "LOADING";
 export const RECEIVE_CARDS = "RECEIVE_CARDS";
+export const CREATE_QUIZ = "CREATE_QUIZ";
 
 export function index(index) {
   return {
@@ -25,9 +26,24 @@ function persistAllCards(cards) {
   };
 }
 
+function createQuiz(quiz) {
+  return {
+    type: CREATE_QUIZ,
+    quiz
+  };
+}
+
+// export function createQuizCard(quiz){
+//   return dispatch => {
+//     dispatch
+//   }
+// }
+
 export function persistAllCardsThunk() {
   return dispatch => {
-    dispatch(persistAllCards(getDecks()));
-    dispatch(loading(false));
+    getDecks().then(k => {
+      dispatch(persistAllCards(k));
+      dispatch(loading(false));
+    });
   };
 }

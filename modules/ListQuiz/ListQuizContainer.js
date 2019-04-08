@@ -48,7 +48,6 @@ class ListQuizContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("TESTE", state);
   return {
     getAllCards: state.cards
   };

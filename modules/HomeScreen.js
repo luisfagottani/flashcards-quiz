@@ -27,7 +27,7 @@ class HomeScreen extends React.Component {
     }).start();
   }
 
-  unmountComponent() {
+  unmountComponent(view) {
     const { opacity, translateLogo, translateButton } = this.state;
     Animated.timing(opacity, {
       duration: 500,
@@ -43,9 +43,13 @@ class HomeScreen extends React.Component {
       duration: 100,
       toValue: 500,
       useNativeDriver: true
-    }).start(() =>
-      this.props.navigation.navigate("ListQuiz", { transition: "fade" })
-    );
+    }).start(() => {
+      if (view === "list") {
+        this.props.navigation.navigate("ListQuiz", { transition: "fade" });
+      } else {
+        this.props.navigation.navigate("CreateQuiz", { transition: "fade" });
+      }
+    });
   }
 
   render() {
@@ -87,7 +91,7 @@ class HomeScreen extends React.Component {
                 ]
               }
             ]}
-            onPress={() => this.unmountComponent()}
+            onPress={() => this.unmountComponent("list")}
           >
             <Text style={styles.textBtn}> Jogar </Text>
           </TouchableOpacity>
@@ -103,7 +107,7 @@ class HomeScreen extends React.Component {
                 ]
               }
             ]}
-            onPress={this.onPress}
+            onPress={() => this.unmountComponent("quiz")}
           >
             <Text style={styles.textBtn}> Cadastrar Quiz </Text>
           </TouchableOpacity>
