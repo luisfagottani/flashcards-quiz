@@ -4,6 +4,10 @@ import { connect } from "react-redux";
 import { getQuestionByCard } from "../../redux/selectors";
 import BackScreenBtn from "../shared/BackScreenBtn";
 import PlayQuizCard from "./PlayQuizCard";
+import {
+  clearLocalNotification,
+  setLocalNotification
+} from "../../utils/helpers";
 
 class PlayQuizContainer extends Component {
   state = {
@@ -41,6 +45,7 @@ class PlayQuizContainer extends Component {
         return { currentQuestion: state.currentQuestion + 1 };
       });
     } else {
+      clearLocalNotification().then(setLocalNotification);
       this.setState({ showScore: true });
     }
   };

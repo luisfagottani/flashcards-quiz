@@ -7,8 +7,12 @@ import thunk from "redux-thunk";
 import { isIphoneX } from "./utils/identify-iphone";
 import reducer from "./redux/reducer";
 import Hello from "./modules/Hello";
+import { setLocalNotification } from "./utils/helpers";
 
 export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
   render() {
     const HEADER_SIZE = isIphoneX() ? 60 : 0;
     return (
