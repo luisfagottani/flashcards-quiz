@@ -8,9 +8,6 @@ import PlayQuizContainer from "../modules/PlayQuiz/PlayQuizContainer";
 
 const AppRouterContainer = createStackNavigator(
   {
-    Home: {
-      screen: HomeScreen
-    },
     ListQuiz: {
       screen: ListQuizContainer,
       navigationOptions: {
@@ -38,7 +35,7 @@ const AppRouterContainer = createStackNavigator(
   },
   {
     headerMode: "none",
-    initialRouteName: "Home",
+    initialRouteName: "ListQuiz",
     transitionConfig: () => fadeIn(),
     cardStyle: {
       backgroundColor: "#bf29ec",

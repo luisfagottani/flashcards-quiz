@@ -1,11 +1,16 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Dimensions, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  Animated
+} from "react-native";
 import Carousel from "react-native-snap-carousel";
 import { connect } from "react-redux";
 import ListQuizCard from "./ListQuizCard";
 import { getAllCards } from "../../redux/selectors";
-
-import BackScreenBtn from "../shared/BackScreenBtn";
 
 function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
@@ -21,17 +26,49 @@ export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
 class ListQuizContainer extends Component {
+  state = {
+    opacity: new Animated.Value(0),
+    translateLogo: new Animated.Value(-100),
+    translateButton: new Animated.Value(100)
+  };
   _renderItem({ item }) {
     return <ListQuizCard item={item} />;
   }
 
   componentDidMount() {
-    if (this.props.getAllCards.length === 0) {
-      this.props.navigation.pop();
-      this.props.navigation.push("CreateQuiz", { transition: "fade" });
-    }
+    const { opacity, translateLogo, translateButton } = this.state;
+    Animated.timing(opacity, { duration: 500, toValue: 1 }).start();
+    Animated.spring(translateLogo, { duration: 4, toValue: 0 }).start();
+    Animated.spring(translateButton, {
+      duration: 100,
+      toValue: 0,
+      useNativeDriver: true
+    }).start();
   }
+
+  unmountComponent(view) {
+    const { opacity, translateLogo, translateButton } = this.state;
+    Animated.timing(opacity, {
+      duration: 500,
+      toValue: 0,
+      useNativeDriver: true
+    }).start();
+    Animated.spring(translateLogo, {
+      duration: 4,
+      toValue: -100,
+      useNativeDriver: true
+    }).start();
+    Animated.spring(translateButton, {
+      duration: 100,
+      toValue: 500,
+      useNativeDriver: true
+    }).start(() => {
+      this.props.navigation.navigate("CreateQuiz", { transition: "fade" });
+    });
+  }
+
   render() {
+    const { opacity, translateLogo, translateButton } = this.state;
     return (
       <View
         style={{
@@ -39,17 +76,10 @@ class ListQuizContainer extends Component {
           justifyContent: "center",
           alignItems: "stretch",
           flexDirection: "column",
-          paddingBottom: 100
+          paddingBottom: 100,
+          marginTop: 80
         }}
       >
-        <BackScreenBtn
-          route={"Home"}
-          navigation={this.props.navigation}
-          styles={{ marginBottom: 100 }}
-        >
-          Voltar
-        </BackScreenBtn>
-
         <Carousel
           ref={c => {
             this._carousel = c;
@@ -59,6 +89,23 @@ class ListQuizContainer extends Component {
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
         />
+        <View>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              {
+                transform: [
+                  {
+                    translateX: translateButton
+                  }
+                ]
+              }
+            ]}
+            onPress={() => this.unmountComponent("quiz")}
+          >
+            <Text style={styles.textBtn}> Criar Baralho </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -69,5 +116,25 @@ function mapStateToProps(state) {
     getAllCards: Object.values(getAllCards(state))
   };
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#f77a1f",
+    height: 60,
+    paddingTop: 5,
+    paddingBottom: 5,
+    color: "#fff",
+    marginBottom: 50,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  textBtn: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+    textTransform: "uppercase"
+  }
+});
 
 export default connect(mapStateToProps)(ListQuizContainer);

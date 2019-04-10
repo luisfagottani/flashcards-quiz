@@ -51,7 +51,8 @@ class CreateQuiz extends Component {
         questions: []
       });
 
-      this.props.navigation.push("Home");
+      this.props.navigation.pop();
+      this.props.navigation.push("ListQuiz");
     }
   };
 

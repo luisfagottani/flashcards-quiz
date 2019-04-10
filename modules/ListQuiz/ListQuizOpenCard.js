@@ -4,39 +4,63 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  TouchableHighlight
+  TouchableOpacity
 } from "react-native";
 import { withNavigation } from "react-navigation";
 import Dificulty from "./Dificulty";
 
 const { height: viewportHeight } = Dimensions.get("window");
 
-class ListQuizCard extends Component {
+class ListQuizOpenCard extends Component {
   render() {
     const { item } = this.props;
     return (
-      <TouchableHighlight
-        onPress={() => {
-          this.props.navigation.navigate("PlayQuiz", {
-            uid: item.id
-          });
-        }}
-      >
-        <View style={styles.card}>
-          <View style={styles.head}>
-            <Text style={styles.title}>{item.title}</Text>
+      <View style={styles.card}>
+        <View style={styles.head}>
+          <Text style={styles.title}>{item.title}</Text>
+        </View>
+        <View style={styles.preheader}>
+          <Text style={styles.subtitle}>{item.describe}</Text>
+        </View>
+        <View style={styles.content}>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.contentTitle}>Dificuldade:</Text>
+            <Dificulty vote={item.dificulty} />
           </View>
-          <View style={styles.preheader}>
-            <Text style={styles.subtitle}>{item.describe}</Text>
+          <View>
+            <Text style={styles.contentTitle}>Perguntas:</Text>
+            <Text
+              style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}
+            >
+              {item.questions.length}
+            </Text>
           </View>
-          <View style={styles.content}>
-            <View style={{ marginBottom: 20 }}>
-              <Text style={styles.contentTitle}>Dificuldade:</Text>
-              <Dificulty vote={item.dificulty} />
-            </View>
+          <View style={{ marginTop: 30 }}>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={() => {
+                this.props.navigation.navigate("PlayQuiz", {
+                  uid: item.id
+                });
+              }}
+            >
+              <Text style={styles.textBtn}> Jogar </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={() => {
+                this.props.navigation.navigate("CreateQuestion", {
+                  uid: item.id
+                });
+              }}
+            >
+              <Text style={styles.textBtn}> Add Pergunta </Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </TouchableHighlight>
+      </View>
     );
   }
 }
@@ -44,7 +68,7 @@ class ListQuizCard extends Component {
 const styles = StyleSheet.create({
   card: {
     width: "100%",
-    height: viewportHeight / 2.2,
+    height: viewportHeight / 1.7,
     borderRadius: 3,
     shadowColor: "#000",
     backgroundColor: "#fff",
@@ -109,4 +133,4 @@ const styles = StyleSheet.create({
     textTransform: "uppercase"
   }
 });
-export default withNavigation(ListQuizCard);
+export default withNavigation(ListQuizOpenCard);
