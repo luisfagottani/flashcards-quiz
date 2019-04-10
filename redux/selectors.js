@@ -11,3 +11,10 @@ export const getQuestionByCard = (state, id) => {
   }
   return [];
 };
+
+export const getCardsById = (state, id) => {
+  if (state.cards[id]) {
+    return state.cards[id];
+  }
+  return [];
+};

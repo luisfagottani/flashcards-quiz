@@ -3,12 +3,14 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 class BackScreenBtn extends Component {
   _onPressButton = route => {
-    if (route === "Home" || route === "ListQuiz") {
-      this.props.navigation.pop();
-      this.props.navigation.push(route, { transition: "fade" });
+    if (route === "ListQuiz") {
+      this.props.navigation.navigate("ListQuiz", { transition: "fade" });
+    } else if (route === "ShowCardQuiz") {
+      this.props.navigation.navigate("ShowCardQuiz", {
+        uid: this.props.uid
+      });
     } else {
-      this.props.navigation.goBack();
-      this.props.navigation.pop();
+      this.props.navigation.navigate(route);
     }
   };
   render() {

@@ -17,9 +17,7 @@ class ListQuizCard extends Component {
     return (
       <TouchableHighlight
         onPress={() => {
-          this.props.navigation.navigate("PlayQuiz", {
-            uid: item.id
-          });
+          this.props.clickOpen("ShowCardQuiz", item.id);
         }}
       >
         <View style={styles.card}>

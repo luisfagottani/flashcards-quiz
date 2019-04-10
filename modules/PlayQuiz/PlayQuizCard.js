@@ -1,158 +1,40 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import ContentCard from "./ContentCard";
 class PlayQuizCard extends Component {
   state = {
-    isAnwser: false,
-    isCorrect: false,
-    regressiveCount: 4,
-    interval: ""
+    isAnwser: false
   };
 
-  showAwnser = () => {
+  toggleAnwser = () => {
     const { isAnwser } = this.state;
-    if (!isAnwser) {
-      Alert.alert(
-        "Opa, mas já desistiu?",
-        "Voce deve primeiro responder! Apressadinho.",
-        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-        { cancelable: false }
-      );
-    }
+    this.setState(beforeState => ({
+      isAnwser: !beforeState.isAnwser
+    }));
   };
 
-  clearInterval = () => {
-    clearInterval(this.state.interval);
+  nextQuestion = () => {
+    this.props.incrementQuestion();
+    this.setState({
+      isAnwser: false
+    });
   };
 
-  decrement = () => {
-    if (this.state.regressiveCount === 0) {
-      this.clearInterval();
-      this.props.incrementQuestion();
-      this.setState({
-        isAnwser: false,
-        isCorrect: false,
-        regressiveCount: 4,
-        interval: ""
-      });
-    } else {
-      this.setState(state => {
-        return { regressiveCount: state.regressiveCount - 1 };
-      });
-    }
-  };
-  regressiveCount = () => {
-    let regressiveCount = setInterval(this.decrement, 1000);
-
-    this.setState({ interval: regressiveCount });
-  };
   anwserQuestion = status => {
     if (this.props.question.isRight === status) {
       this.props.incrementScore();
-      this.setState({
-        isCorrect: true
-      });
-    } else {
-      this.setState({
-        isCorrect: false
-      });
     }
-
-    this.setState({
-      isAnwser: true
-    });
-    this.regressiveCount();
+    this.nextQuestion();
   };
 
   componentWillUnmount = () => {
     this.setState({
-      isAnwser: false,
-      isCorrect: false,
-      regressiveCount: 4,
-      interval: ""
+      isAnwser: false
     });
   };
   render() {
     const { question, answer, isRight } = this.props.question;
-    const { isAnwser, isCorrect } = this.state;
-    if (isAnwser) {
-      return (
-        <View
-          style={{
-            width: "80%",
-            alignSelf: "center",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 40,
-              textAlign: "center",
-              fontWeight: "bold",
-              alignItems: "center",
-              marginBottom: 30
-            }}
-          >
-            {answer}
-          </Text>
-          <Text
-            style={{
-              fontSize: 16,
-              color: "#fff",
-              fontWeight: "bold",
-              textAlign: "center",
-              marginBottom: 30
-            }}
-          >
-            A RESPOSTA ESTAVA:{" "}
-            {isRight ? (
-              <Text style={{ color: "green" }}>CERTA</Text>
-            ) : (
-              <Text style={{ color: "red" }}>ERRADA</Text>
-            )}
-          </Text>
-
-          <Text
-            style={{
-              fontSize: 20,
-              color: "#fff",
-              fontWeight: "bold",
-              textAlign: "center",
-              marginBottom: 50
-            }}
-          >
-            {isCorrect ? (
-              <Text style={{ color: "green" }}>PARABÉNS! VOCÊ ACERTOU</Text>
-            ) : (
-              <Text style={{ color: "red" }}>PUTZ, VOCÊ ERROU</Text>
-            )}
-          </Text>
-
-          <Text
-            style={{
-              fontSize: 25,
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "#fff"
-            }}
-          >
-            Mudando a pergunta em:
-          </Text>
-          <Text
-            style={{
-              fontSize: 45,
-              color: "#fff",
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "#fff"
-            }}
-          >
-            {this.state.regressiveCount}
-          </Text>
-        </View>
-      );
-    }
+    const { isAnwser } = this.state;
     return (
       <View
         style={{
@@ -162,25 +44,11 @@ class PlayQuizCard extends Component {
           alignItems: "center"
         }}
       >
-        <Text
-          style={{
-            color: "#fff",
-            fontSize: 40,
-            textAlign: "center",
-            fontWeight: "bold",
-            alignItems: "center"
-          }}
-        >
-          {question}
-        </Text>
-        <TouchableOpacity
-          style={{ marginBottom: 80 }}
-          onPress={() => this.showAwnser()}
-        >
-          <Text style={{ fontSize: 16, color: "red", textAlign: "center" }}>
-            Ver Resposta
-          </Text>
-        </TouchableOpacity>
+        <ContentCard
+          toggleAnwser={this.toggleAnwser}
+          text={isAnwser ? answer : question}
+          isAnwser={isAnwser}
+        />
 
         <View>
           <TouchableOpacity

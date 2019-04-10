@@ -1,12 +1,13 @@
 import HomeScreen from "./../modules/HomeScreen";
 import ListQuizContainer from "./../modules/ListQuiz/ListQuizContainer";
+import ListQuizOpenCard from "./../modules/ListQuiz/ListQuizOpenCard";
 import CreateQuiz from "../modules/CreateQuiz/CreateQuiz";
 import CreateQuestion from "../modules/CreateQuestion/CreateQuestion";
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import { fadeIn } from "react-navigation-transitions";
 import PlayQuizContainer from "../modules/PlayQuiz/PlayQuizContainer";
 
-const AppRouterContainer = createStackNavigator(
+const AppRouterContainer = createSwitchNavigator(
   {
     ListQuiz: {
       screen: ListQuizContainer,
@@ -22,6 +23,12 @@ const AppRouterContainer = createStackNavigator(
     },
     CreateQuestion: {
       screen: CreateQuestion,
+      navigationOptions: {
+        gesturesEnabled: false
+      }
+    },
+    ShowCardQuiz: {
+      screen: ListQuizOpenCard,
       navigationOptions: {
         gesturesEnabled: false
       }

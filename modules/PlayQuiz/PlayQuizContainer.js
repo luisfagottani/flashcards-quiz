@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 import { connect } from "react-redux";
 import { getQuestionByCard } from "../../redux/selectors";
 import BackScreenBtn from "../shared/BackScreenBtn";
@@ -8,6 +8,7 @@ import {
   clearLocalNotification,
   setLocalNotification
 } from "../../utils/helpers";
+import ResultCard from "./ResultCard";
 
 class PlayQuizContainer extends Component {
   state = {
@@ -19,11 +20,21 @@ class PlayQuizContainer extends Component {
 
   componentDidMount() {
     const { questions } = this.props;
-    if (questions.length === 0) {
-      this.props.navigation.pop();
-      this.props.navigation.navigate("CreateQuestion", {
-        uid: this.props.navigation.state.params.uid
-      });
+    if (questions && questions.length === 0) {
+      Alert.alert(
+        "Opa!",
+        "É preciso criar uma pergunta!",
+        [
+          {
+            text: "OK",
+            onPress: () =>
+              this.props.navigation.navigate("ShowCardQuiz", {
+                uid: this.props.navigation.state.params.uid
+              })
+          }
+        ],
+        { cancelable: false }
+      );
     }
     this.setState({
       numberOfQuestions: questions.length,
@@ -63,37 +74,9 @@ class PlayQuizContainer extends Component {
     if (questions.length === 0) {
       return <View />;
     }
+
     if (showScore) {
-      return (
-        <View
-          style={{
-            textAlign: "center",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <BackScreenBtn
-            route={"ListQuiz"}
-            navigation={this.props.navigation}
-            styles={{ marginBottom: 50 }}
-          >
-            Voltar
-          </BackScreenBtn>
-          <Text style={{ fontSize: 30, color: "#fff", fontWeight: "bold" }}>
-            Sua pontuação:
-          </Text>
-          <Text
-            style={{
-              fontSize: 30,
-              color: "#000",
-              fontWeight: "bold",
-              marginBottom: 40
-            }}
-          >
-            {score} {score === 0 || score > 1 ? " pontos" : "ponto"}
-          </Text>
-        </View>
-      );
+      return <ResultCard score={score} />;
     }
     return (
       <View>

@@ -49,8 +49,9 @@ class CreateQuestion extends Component {
         answer: "",
         isRight: false
       });
-      this.props.navigation.pop();
-      this.props.navigation.push("ListQuiz");
+      this.props.navigation.navigate("ShowCardQuiz", {
+        uid: this.props.navigation.state.params.uid
+      });
     }
   };
 
@@ -70,7 +71,8 @@ class CreateQuestion extends Component {
       >
         <BackScreenBtn
           navigation={this.props.navigation}
-          route={"ListQuiz"}
+          route={"ShowCardQuiz"}
+          uid={this.props.navigation.state.params.uid}
           styles={{
             marginBottom: 100,
             alignSelf: "flex-start",

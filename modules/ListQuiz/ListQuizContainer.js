@@ -27,18 +27,13 @@ export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
 class ListQuizContainer extends Component {
   state = {
-    opacity: new Animated.Value(0),
-    translateLogo: new Animated.Value(-100),
+    translateContainer: new Animated.Value(-200),
     translateButton: new Animated.Value(100)
   };
-  _renderItem({ item }) {
-    return <ListQuizCard item={item} />;
-  }
 
   componentDidMount() {
-    const { opacity, translateLogo, translateButton } = this.state;
-    Animated.timing(opacity, { duration: 500, toValue: 1 }).start();
-    Animated.spring(translateLogo, { duration: 4, toValue: 0 }).start();
+    const { translateContainer, translateButton } = this.state;
+    Animated.spring(translateContainer, { duration: 4, toValue: 0 }).start();
     Animated.spring(translateButton, {
       duration: 100,
       toValue: 0,
@@ -46,16 +41,15 @@ class ListQuizContainer extends Component {
     }).start();
   }
 
-  unmountComponent(view) {
-    const { opacity, translateLogo, translateButton } = this.state;
-    Animated.timing(opacity, {
-      duration: 500,
-      toValue: 0,
-      useNativeDriver: true
-    }).start();
-    Animated.spring(translateLogo, {
+  _renderItem = ({ item }) => {
+    return <ListQuizCard clickOpen={this.unmountComponent} item={item} />;
+  };
+
+  unmountComponent = (view, id = 0) => {
+    const { translateContainer, translateButton } = this.state;
+    Animated.spring(translateContainer, {
       duration: 4,
-      toValue: -100,
+      toValue: -600,
       useNativeDriver: true
     }).start();
     Animated.spring(translateButton, {
@@ -63,12 +57,18 @@ class ListQuizContainer extends Component {
       toValue: 500,
       useNativeDriver: true
     }).start(() => {
-      this.props.navigation.navigate("CreateQuiz", { transition: "fade" });
+      if (view === "quiz") {
+        this.props.navigation.navigate("CreateQuiz", { transition: "fade" });
+      } else {
+        this.props.navigation.navigate("ShowCardQuiz", {
+          uid: id
+        });
+      }
     });
-  }
+  };
 
   render() {
-    const { opacity, translateLogo, translateButton } = this.state;
+    const { translateContainer, translateButton } = this.state;
     return (
       <View
         style={{
@@ -81,6 +81,14 @@ class ListQuizContainer extends Component {
         }}
       >
         <Carousel
+          layout={"stack"}
+          containerCustomStyle={{
+            transform: [
+              {
+                translateY: translateContainer
+              }
+            ]
+          }}
           ref={c => {
             this._carousel = c;
           }}
@@ -103,7 +111,7 @@ class ListQuizContainer extends Component {
             ]}
             onPress={() => this.unmountComponent("quiz")}
           >
-            <Text style={styles.textBtn}> Criar Baralho </Text>
+            <Text style={styles.textBtn}> Criar Quiz </Text>
           </TouchableOpacity>
         </View>
       </View>

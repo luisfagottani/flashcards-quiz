@@ -35,7 +35,7 @@ class CreateQuiz extends Component {
         { cancelable: false }
       );
     } else {
-      this.props.dispatch(
+      const uid = this.props.dispatch(
         createQuizCard({
           title: this.state.titleQuiz,
           describe: this.state.describeQuiz,
@@ -51,8 +51,9 @@ class CreateQuiz extends Component {
         questions: []
       });
 
-      this.props.navigation.pop();
-      this.props.navigation.push("ListQuiz");
+      this.props.navigation.navigate("ShowCardQuiz", {
+        uid
+      });
     }
   };
 
@@ -72,7 +73,7 @@ class CreateQuiz extends Component {
       >
         <BackScreenBtn
           navigation={this.props.navigation}
-          route={"Home"}
+          route={"ListQuiz"}
           styles={{
             marginBottom: 100,
             alignSelf: "flex-start",
