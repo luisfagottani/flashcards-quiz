@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StatusBar } from "react-native";
+import { View, StatusBar, Text } from "react-native";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
@@ -20,12 +20,12 @@ export default class App extends React.Component {
         <View
           style={{
             flex: 1,
-            paddingTop: HEADER_SIZE,
+            paddingTop: 60,
             alignItems: "stretch",
             backgroundColor: "#bf29ec"
           }}
         >
-          <StatusBar backgroundColor="#bf29ec" barStyle="light-content" />
+          <StatusBar backgroundColor="blue" />
           <Hello />
         </View>
       </Provider>

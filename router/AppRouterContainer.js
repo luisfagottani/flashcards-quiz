@@ -1,4 +1,3 @@
-import HomeScreen from "./../modules/HomeScreen";
 import ListQuizContainer from "./../modules/ListQuiz/ListQuizContainer";
 import ListQuizOpenCard from "./../modules/ListQuiz/ListQuizOpenCard";
 import CreateQuiz from "../modules/CreateQuiz/CreateQuiz";
