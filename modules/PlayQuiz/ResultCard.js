@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BackScreenBtn from "../shared/BackScreenBtn";
 import { withNavigation } from "react-navigation";
+
 class ResultCard extends Component {
   render() {
     const { score } = this.props;
@@ -31,14 +32,42 @@ class ResultCard extends Component {
             fontSize: 30,
             color: "#000",
             fontWeight: "bold",
-            marginBottom: 40
+            marginBottom: 60
           }}
         >
           {score} {score === 0 || score > 1 ? " pontos" : "ponto"}
         </Text>
+        <View>
+          <TouchableOpacity
+            style={[styles.button]}
+            onPress={() => this.props.restartQuiz()}
+          >
+            <Text style={styles.textBtn}> Restart Quiz </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#f77a1f",
+    height: 60,
+    paddingTop: 5,
+    paddingBottom: 5,
+    color: "#fff",
+    marginBottom: 50,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  textBtn: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+    textTransform: "uppercase"
+  }
+});
 
 export default withNavigation(ResultCard);

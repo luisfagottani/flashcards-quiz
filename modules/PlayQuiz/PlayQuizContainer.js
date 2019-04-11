@@ -65,9 +65,21 @@ class PlayQuizContainer extends Component {
     this.setState({
       numberOfQuestions: 0,
       currentQuestion: 0,
-      score: 0
+      score: 0,
+      showScore: false
     });
   }
+
+  restartQuiz = () => {
+    const { questions } = this.props;
+
+    this.setState({
+      numberOfQuestions: questions.length,
+      currentQuestion: 0,
+      score: 0,
+      showScore: false
+    });
+  };
   render() {
     const { questions } = this.props;
     const { numberOfQuestions, currentQuestion, showScore, score } = this.state;
@@ -76,7 +88,7 @@ class PlayQuizContainer extends Component {
     }
 
     if (showScore) {
-      return <ResultCard score={score} />;
+      return <ResultCard restartQuiz={this.restartQuiz} score={score} />;
     }
     return (
       <View>
