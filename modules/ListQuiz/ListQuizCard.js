@@ -33,6 +33,18 @@ class ListQuizCard extends Component {
               <Dificulty vote={item.dificulty} />
             </View>
           </View>
+          <View>
+            <Text style={styles.contentTitle}>Perguntas:</Text>
+            <Text
+              style={{
+                fontSize: 25,
+                fontWeight: "bold",
+                textAlign: "center"
+              }}
+            >
+              {item.questions.length}
+            </Text>
+          </View>
         </View>
       </TouchableHighlight>
     );
